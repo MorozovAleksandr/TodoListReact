@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 const TodoList = () => {
     return (
         <ul>
-            <li>Learn React</li>
+            <li>Learn Reactik</li>
             <li>Build awesome App</li>
         </ul>
     );
