@@ -7,36 +7,48 @@ export default class TodoListItem extends React.Component {
         super();
         this.state = {
             done: false,
+            important: false,
         }
     }
 
     onLabelClick = () => {
-        this.state.done ? this.setState({ done: false }) : this.setState({ done: true });
+        this.setState((state) => {
+            return {
+                done: !state.done,
+            }
+        })
+    }
+
+    onMarkImportant = () => {
+        this.setState((state) => {
+            return {
+                important: !state.important,
+            }
+        })
     }
 
     render() {
-        const { label, important = false } = this.props;
-        const { done } = this.state;
+        const { label, onDeleted } = this.props;
+        const { done, important } = this.state;
 
         let classNames = 'TodoListItem';
         if (done) {
             classNames += ' done';
         }
 
-        const importantStyle = {
-            color: important ? 'steelblue' : 'black',
-            fontWeight: important ? 'bolder' : 'normal',
-        };
+        if (important) {
+            classNames += ' important';
+        }
 
         return (
             <div className={classNames}>
-                <span className="TodoListItemText" onClick={this.onLabelClick} style={importantStyle}>{label}</span>
+                <span className="TodoListItemText" onClick={this.onLabelClick}>{label}</span>
                 <div>
-                    <button type="button" className="btn btn-outline-success btn-sm">
+                    <button type="button" onClick={this.onMarkImportant} className="btn btn-outline-success btn-sm">
                         <i className="bi bi-exclamation"></i>
                     </button>
 
-                    <button type="button" className="btn btn-outline-danger btn-sm">
+                    <button type="button" onClick={onDeleted} className="btn btn-outline-danger btn-sm">
                         <i className="bi bi-x-octagon-fill"></i>
                     </button>
                 </div>
