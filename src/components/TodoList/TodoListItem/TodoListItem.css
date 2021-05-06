@@ -1,0 +1,27 @@
+.TodoListItem {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.TodoListItemText {
+    display: flex;
+    align-items: center;
+}
+
+.bi-exclamation::before {
+    font-size: 28px;
+}
+
+.bi-x-octagon-fill::before {
+    font-size: 28px;
+}
+
+.btn {
+    margin: 0 3px;
+}
+
+.done {
+    text-decoration: line-through;
+}
