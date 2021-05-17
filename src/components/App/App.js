@@ -42,7 +42,6 @@ class App extends React.Component {
     }
 
     addItem = (item) => {
-
         const newTodoItem = this.createTodoItem(item);
         this.setState(({ todoData }) => {
             const newTodoData = [...todoData, newTodoItem];

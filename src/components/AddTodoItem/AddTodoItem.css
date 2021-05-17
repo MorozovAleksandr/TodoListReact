@@ -1,3 +1,11 @@
 .AddTodoItem {
     margin-top: 15px;
 }
+
+.btnAdd {
+    width: 100%;
+}
+
+.form-control {
+    margin-right: 3px;
+}
