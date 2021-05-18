@@ -17,6 +17,7 @@ class App extends React.Component {
                 this.createTodoItem('Drink vodka'),
                 this.createTodoItem('Drink Juice')
             ],
+            todoDataFilterFlag: 'all'
         }
     }
 
@@ -74,6 +75,28 @@ class App extends React.Component {
         this.toggleProperty(id, 'done');
     }
 
+    changeFilterFlag = (filter) => {
+        this.setState(({ todoDataFilterFlag }) => {
+            return {
+                todoDataFilterFlag: filter
+            }
+        })
+
+        this.setState(({ todoDataFilterFlag, filteredTodoData, todoData }) => {
+            if (todoDataFilterFlag === 'done') {
+                return {
+                    filteredTodoData: [...todoData.filter(el => el.done === true)]
+                }
+            }
+
+            if (todoDataFilterFlag === 'active') {
+                return {
+                    filteredTodoData: [...todoData.filter(el => el.done === false)]
+                }
+            }
+        })
+    }
+
     render() {
         const doneCount = this.state.todoData.filter(el => el.done).length;
         const toDoCount = this.state.todoData.length - doneCount;
@@ -82,8 +105,8 @@ class App extends React.Component {
             <div className='container-sm'>
                 <AppHeader toDo={toDoCount} done={doneCount} />
                 <SearchPanel />
-                <ItemStatusFilte />
-                <TodoList onToggleImportant={this.onToggleImportant} onToggleDone={this.onToggleDone} onDeleted={this.deleteItem} todos={this.state.todoData} />
+                <ItemStatusFilte changeFilterFlag={this.changeFilterFlag} />
+                <TodoList onToggleImportant={this.onToggleImportant} onToggleDone={this.onToggleDone} onDeleted={this.deleteItem} todos={this.state.todoDataFilterFlag === 'all' ? this.state.todoData : this.state.filteredTodoData} />
                 <AddTodoItem onAddItem={this.addItem} />
             </div>
         );
