@@ -17,7 +17,8 @@ class App extends React.Component {
                 this.createTodoItem('Drink vodka'),
                 this.createTodoItem('Drink Juice')
             ],
-            todoDataFilterFlag: 'all'
+            FilterFlag: 'all',
+            term: ''
         }
     }
 
@@ -75,38 +76,34 @@ class App extends React.Component {
         this.toggleProperty(id, 'done');
     }
 
-    changeFilterFlag = (filter) => {
-        this.setState(({ todoDataFilterFlag }) => {
-            return {
-                todoDataFilterFlag: filter
-            }
-        })
+    onSearchChange = (term) => {
+        this.setState({ term });
+    }
 
-        this.setState(({ todoDataFilterFlag, filteredTodoData, todoData }) => {
-            if (todoDataFilterFlag === 'done') {
-                return {
-                    filteredTodoData: [...todoData.filter(el => el.done === true)]
-                }
-            }
+    onChangeFilterFlag = (FilterFlag) => {
+        this.setState({ FilterFlag });
+    }
 
-            if (todoDataFilterFlag === 'active') {
-                return {
-                    filteredTodoData: [...todoData.filter(el => el.done === false)]
-                }
-            }
+    search(items, term) {
+        if (term.length === 0) return items;
+
+        return items.filter((el) => {
+            return el.label.toLowerCase().indexOf(term.toLowerCase()) > -1;
         })
     }
 
     render() {
+        const visibleItems = this.search(this.state.todoData, this.state.term);
+
         const doneCount = this.state.todoData.filter(el => el.done).length;
         const toDoCount = this.state.todoData.length - doneCount;
 
         return (
             <div className='container-sm'>
                 <AppHeader toDo={toDoCount} done={doneCount} />
-                <SearchPanel />
-                <ItemStatusFilte changeFilterFlag={this.changeFilterFlag} />
-                <TodoList onToggleImportant={this.onToggleImportant} onToggleDone={this.onToggleDone} onDeleted={this.deleteItem} todos={this.state.todoDataFilterFlag === 'all' ? this.state.todoData : this.state.filteredTodoData} />
+                <SearchPanel onSearchChange={this.onSearchChange} />
+                <ItemStatusFilte onChangeFilterFlag={this.onChangeFilterFlag} />
+                <TodoList onToggleImportant={this.onToggleImportant} onToggleDone={this.onToggleDone} FilterFlag={this.state.FilterFlag} onDeleted={this.deleteItem} todos={visibleItems} />
                 <AddTodoItem onAddItem={this.addItem} />
             </div>
         );
